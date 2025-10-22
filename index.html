@@ -1,58 +1,62 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Dynamic Video Player</title>
-  <style>
-    body {
-      margin: 0;
-      background: #000;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-    }
-    video, iframe {
-      width: 90%;
-      height: 90%;
-      border: none;
-      background: #000;
-    }
-  </style>
-</head>
-<body>
-  <script>
-    // Get current URL and query parameters
-    const params = new URLSearchParams(window.location.search);
-    const videoParam = params.get("video");
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dynamic Video Player</title>
+    <style>
+      body {
+        margin: 0;
+        background: #000;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+      }
+      video,
+      iframe {
+        width: 90%;
+        height: 90%;
+        border: none;
+        background: #000;
+      }
+    </style>
+  </head>
+  <body>
+    <script>
+      // Get current URL and query parameters
+      const params = new URLSearchParams(window.location.search);
+      const videoParam = params.get("video");
 
-    let videoUrl;
+      let videoUrl;
 
-    if (videoParam) {
-      // If ?video=2 -> https://example.com/video2.mp4
-      videoUrl = `https://example.com/video${videoParam}.mp4`;
-    } else {
-      // Otherwise, use the current page URL (without query)
-      const baseUrl = window.location.origin + window.location.pathname;
-      videoUrl = baseUrl;
-    }
+      if (videoParam) {
+        // If ?video=2 -> https://example.com/video2.mp4
+        videoUrl = `https://pub-fd5dbfdb805a4251b5a684030eb2d1f8.r2.dev/boxpotatos${videoParam}.mp4`;
+      } else {
+        // Otherwise, use the current page URL (without query)
+        const baseUrl = window.location.origin + window.location.pathname;
+        videoUrl = baseUrl;
+      }
 
-    // Detect if it's a Cloudflare Stream iframe link
-    if (videoUrl.includes("cloudflarestream.com") && videoUrl.includes("/iframe")) {
-      document.body.innerHTML = `
+      // Detect if it's a Cloudflare Stream iframe link
+      if (
+        videoUrl.includes("cloudflarestream.com") &&
+        videoUrl.includes("/iframe")
+      ) {
+        document.body.innerHTML = `
         <iframe 
           src="${videoUrl}?autoplay=1&loop=1&muted=1"
           allow="autoplay; encrypted-media"
           allowfullscreen>
         </iframe>
       `;
-    } else {
-      // Normal <video> file (MP4 or similar)
-      document.body.innerHTML = `
+      } else {
+        // Normal <video> file (MP4 or similar)
+        document.body.innerHTML = `
         <video src="${videoUrl}" autoplay loop muted playsinline controls></video>
       `;
-    }
-  </script>
-</body>
+      }
+    </script>
+  </body>
 </html>
